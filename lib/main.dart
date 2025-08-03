@@ -1,18 +1,42 @@
+import 'package:fittnes_track/configs/config-router/router.dart';
+import 'package:fittnes_track/providers/on_boarding/onboarding_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'core/constants.dart';
+import 'providers/auth/auth_provider.dart';
 import 'screens/onboarding_screen.dart';
+import 'screens/sign_in_screen.dart';
+import 'screens/main_screen.dart';
 
 void main() async {
-  runApp(ProviderScope(child: const MyApp()));
+  WidgetsFlutterBinding.ensureInitialized();
+  final sh = await SharedPreferences.getInstance();
+  final hasSeenOnboarding = sh.get(hasOnboardingInitialized) as bool?;
+
+  runApp(
+    ProviderScope(
+      overrides: [
+        hasSeenOnboardingProvider.overrideWith(
+          (ref) => hasSeenOnboarding ?? false,
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final hasOnboardingSeen = ref.watch(hasSeenOnboardingProvider);
+    final user = ref.watch(authNotifierProvider);
+    final router = ref.watch(routeProvider);
+
+    return MaterialApp.router(
       title: 'Fitness Tracker',
       theme: ThemeData(
         useMaterial3: true,
@@ -35,17 +59,19 @@ class MyApp extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        tabBarTheme: const TabBarThemeData(
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white60,
-          indicatorColor: Colors.white,
-        ),
-        floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: Colors.white,
-          foregroundColor: Color(0xFF1A237E),
+        navigationBarTheme: NavigationBarThemeData(
+          indicatorColor: Colors.white.withOpacity(0.1),
+          backgroundColor: const Color(0xFF1A237E),
         ),
       ),
-      home: const OnboardingScreen(),
+      routeInformationParser: router.routeInformationParser,
+      routeInformationProvider: router.routeInformationProvider,
+      routerDelegate: router.routerDelegate,
+      // home: hasOnboardingSeen
+      //     ? (user?.isAuthenticated == true
+      //         ? const MainScreen()
+      //         : const SignInScreen())
+      //     : const OnboardingScreen(),
     );
   }
 }
