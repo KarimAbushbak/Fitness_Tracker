@@ -5,10 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/constants.dart';
-import 'providers/auth/auth_provider.dart';
-import 'screens/onboarding_screen.dart';
-import 'screens/sign_in_screen.dart';
-import 'screens/main_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,8 +28,6 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final hasOnboardingSeen = ref.watch(hasSeenOnboardingProvider);
-    final user = ref.watch(authNotifierProvider);
     final router = ref.watch(routeProvider);
 
     return MaterialApp.router(

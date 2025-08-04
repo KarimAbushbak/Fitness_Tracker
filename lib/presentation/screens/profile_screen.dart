@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../configs/config-router/route_names.dart';
-import '../model/workout/workout.dart';
-import '../providers/auth/auth_provider.dart';
-import '../providers/workout/workout_provider.dart';
+import '../../configs/config-router/route_names.dart';
+import '../../model/workout/workout.dart';
+import '../../providers/auth/auth_provider.dart';
+import '../../providers/workout/workout_provider.dart';
 import 'edit_profile_screen.dart';
-import 'settings_screen.dart';
-import 'notifications_screen.dart';
 import 'help_support_screen.dart';
-import 'sign_in_screen.dart';
+import 'notifications_screen.dart';
+import 'settings_screen.dart';
 
 class ProfileScreen extends HookConsumerWidget {
   const ProfileScreen({super.key});

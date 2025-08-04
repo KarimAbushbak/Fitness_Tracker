@@ -6,19 +6,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:fittnes_track/configs/config-router/route_names.dart';
-import 'package:fittnes_track/screens/main_screen.dart';
-import 'package:fittnes_track/screens/onboarding_screen.dart';
-import 'package:fittnes_track/screens/profile_screen.dart';
-import 'package:fittnes_track/screens/sign_in_screen.dart';
-import 'package:fittnes_track/screens/sign_up_screen.dart';
-import 'package:fittnes_track/screens/workout_list_screen.dart';
+import 'package:fittnes_track/presentation/screens/onboarding_screen.dart';
+import 'package:fittnes_track/presentation/screens/sign_up_screen.dart';
+import 'package:fittnes_track/presentation/screens/workout_list_screen/workout_list_screen.dart';
 
+import '../../presentation/screens/main_screen.dart';
+import '../../presentation/screens/profile_screen.dart';
+import '../../presentation/screens/sign_in_screen.dart';
 import '../../providers/auth/auth_provider.dart';
 part 'rediraction.dart';
 final routeProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: RouteNames.workoutList,
-    // You can change to '/home/workout-list' after auth
     debugLogDiagnostics: true,
     errorBuilder: (context, state) => Scaffold(
       appBar: AppBar(title: const Text('Error')),
@@ -26,6 +25,7 @@ final routeProvider = Provider<GoRouter>((ref) {
     ),
     redirect: (context,state){
       handleRedirection(context, state, ref);
+      return null;
 
     },
     routes: [
